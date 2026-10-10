@@ -1,0 +1,1465 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142d38">
+  <title>Cupcake's Dream Garden</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
+
+    :root {
+      --night: #142d38;
+      --night2: #1c3c43;
+      --cream: #fff8e9;
+      --paper: #fffdf6;
+      --mint: #bfe0c3;
+      --pink: #f3b5a9;
+      --yellow: #f7d787;
+      --lav: #cab9df;
+      --lily: #8fc5ff;
+      --ink: #233943;
+      --muted: #668087;
+      --line: rgba(35, 57, 67, .14);
+      --shadow: 0 18px 50px rgba(9, 29, 37, .18)
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      margin: 0;
+      background: var(--night);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    button {
+      font: inherit;
+      color: inherit
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--yellow);
+      outline-offset: 4px
+    }
+
+    .shell {
+      max-width: 1440px;
+      margin: auto;
+      padding: 24px 34px 34px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      position: relative;
+      z-index: 2
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 700
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 50% 50% 48% 15%;
+      transform: rotate(-18deg);
+      display: grid;
+      place-items: center;
+      background: var(--pink);
+      color: var(--night);
+      font-size: 19px;
+      box-shadow: inset -5px -5px 0 rgba(18, 45, 56, .11)
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #d3e0d9;
+      letter-spacing: .05em
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 14px var(--mint)
+    }
+
+    .sound {
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: transparent;
+      border-radius: 30px;
+      padding: 9px 14px;
+      cursor: pointer;
+      font-size: 12px
+    }
+
+    .sound:hover {
+      background: rgba(255, 255, 255, .09)
+    }
+
+    .intro {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 700px;
+      margin: 26px auto 16px
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      font-weight: 700
+    }
+
+    .intro h1 {
+      font: 600 clamp(38px, 5vw, 66px)/1.04 Fraunces, serif;
+      letter-spacing: -.035em;
+      margin: 10px 0 8px
+    }
+
+    .intro p {
+      margin: 0;
+      color: #d3e0d9;
+      font-size: 14px;
+      line-height: 1.7
+    }
+
+    .step-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      border: 1px solid rgba(255, 255, 255, .19);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, .07);
+      padding: 8px 14px;
+      color: #f5edcf;
+      font-size: 11px
+    }
+
+    .step-hint b {
+      color: var(--lily);
+      font-weight: 700
+    }
+
+    .progress-wrap {
+      width: min(460px, 92%);
+      margin: 14px auto 0;
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .progress-track {
+      height: 5px;
+      background: rgba(255, 255, 255, .16);
+      border-radius: 10px;
+      flex: 1;
+      overflow: hidden
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--lily), var(--mint), var(--yellow));
+      border-radius: 10px;
+      transition: width .6s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    .progress-label {
+      font-size: 10px;
+      color: #c4d7d0;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      white-space: nowrap
+    }
+
+    .garden {
+      position: relative;
+      flex: 1;
+      min-height: 515px;
+      margin: 8px auto 0;
+      width: 100%;
+      border: 1px solid rgba(231, 242, 222, .15);
+      border-radius: 28px;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 108%, #496d58 0%, #31564e 28%, transparent 55%), linear-gradient(180deg, #213c53 0%, #395467 40%, #566c61 78%, #304f48 100%);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, .2);
+      isolation: isolate
+    }
+
+    .garden:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(20, 45, 56, .02), rgba(20, 45, 56, .22)), radial-gradient(ellipse at 82% 42%, rgba(247, 215, 135, .14), transparent 38%);
+      pointer-events: none;
+      z-index: 1
+    }
+
+    .moon {
+      position: absolute;
+      top: 9%;
+      right: 16%;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #f7e7b4;
+      box-shadow: 0 0 38px rgba(247, 231, 180, .38), 0 0 100px rgba(247, 231, 180, .17);
+      z-index: 0
+    }
+
+    .moon:after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border: 1px solid rgba(247, 231, 180, .22);
+      border-radius: 50%
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: radial-gradient(2px 2px at 12% 20%, #fff8 50%, transparent 60%), radial-gradient(1px 1px at 28% 13%, #fff9 50%, transparent 60%), radial-gradient(2px 2px at 44% 26%, #fff7 50%, transparent 60%), radial-gradient(1px 1px at 67% 14%, #fff8 50%, transparent 60%), radial-gradient(2px 2px at 79% 28%, #fff7 50%, transparent 60%), radial-gradient(1px 1px at 89% 17%, #fff8 50%, transparent 60%), radial-gradient(2px 2px at 56% 9%, #fff8 50%, transparent 60%)
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1
+    }
+
+    .hill {
+      fill: #527862
+    }
+
+    .hill2 {
+      fill: #3f6757
+    }
+
+    .hill3 {
+      fill: #2d5148
+    }
+
+    .path {
+      fill: none;
+      stroke: #d8c59b;
+      stroke-width: 26;
+      stroke-linecap: round;
+      opacity: .94
+    }
+
+    .path-edge {
+      fill: none;
+      stroke: #a89473;
+      stroke-width: 29;
+      stroke-linecap: round;
+      opacity: .28
+    }
+
+    .pathdash {
+      fill: none;
+      stroke: #f6e6bd;
+      stroke-width: 2;
+      stroke-dasharray: 5 12;
+      stroke-linecap: round;
+      opacity: .8
+    }
+
+    .structure {
+      fill: #efdcc0;
+      stroke: #8e7864;
+      stroke-width: 3
+    }
+
+    .glass {
+      fill: #b9d7ce;
+      stroke: #8e7864;
+      stroke-width: 2
+    }
+
+    .roof {
+      fill: #e9a99b;
+      stroke: #8e7864;
+      stroke-width: 3
+    }
+
+    .trunk {
+      fill: #765648
+    }
+
+    .leaf {
+      fill: #668967
+    }
+
+    .leaf2 {
+      fill: #86a77a
+    }
+
+    .pond {
+      fill: #98c8c5;
+      stroke: #d2e6d5;
+      stroke-width: 4
+    }
+
+    .pondline {
+      fill: none;
+      stroke: #e9f6e7;
+      stroke-width: 2;
+      opacity: .7
+    }
+
+    .flowers {
+      fill: #f4b4ac;
+      stroke: #ffe3ca;
+      stroke-width: 1
+    }
+
+    .interactive {
+      cursor: pointer;
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: filter .2s, transform .2s
+    }
+
+    .interactive:hover {
+      filter: drop-shadow(0 0 10px rgba(255, 239, 182, .9));
+      transform: scale(1.05)
+    }
+
+    .interactive:focus {
+      outline: none;
+      filter: drop-shadow(0 0 10px rgba(255, 239, 182, 1))
+    }
+
+    .place {
+      cursor: pointer
+    }
+
+    .place:hover .pin,
+    .place:focus .pin {
+      transform: translateY(-5px);
+      filter: drop-shadow(0 6px 8px #142d3870)
+    }
+
+    .pin {
+      transition: .2s
+    }
+
+    .place.locked {
+      opacity: .45;
+      cursor: not-allowed
+    }
+
+    .place.done .pin {
+      fill: var(--mint)
+    }
+
+    .place-label {
+      font: 700 12px 'DM Sans', sans-serif;
+      fill: #fff8e9;
+      paint-order: stroke;
+      stroke: #284a48;
+      stroke-width: 4px;
+      stroke-linejoin: round;
+      letter-spacing: .02em
+    }
+
+    .place-sub {
+      font: 500 9px 'DM Sans', sans-serif;
+      fill: #e0ead9;
+      paint-order: stroke;
+      stroke: #284a48;
+      stroke-width: 3px;
+      stroke-linejoin: round
+    }
+
+    .firefly {
+      fill: #f8e9a4;
+      filter: drop-shadow(0 0 5px #ffe899);
+      animation: blink 2s ease-in-out infinite alternate
+    }
+
+    .firefly:nth-child(2n) {
+      animation-delay: .8s
+    }
+
+    .tiny-guide {
+      position: absolute;
+      width: 66px;
+      height: 80px;
+      left: 8%;
+      bottom: 8%;
+      z-index: 2;
+      animation: bob 3s ease-in-out infinite;
+      pointer-events: none
+    }
+
+    .guide-shadow {
+      position: absolute;
+      bottom: 1px;
+      left: 17px;
+      width: 34px;
+      height: 8px;
+      border-radius: 50%;
+      background: #142d3860
+    }
+
+    .guide-body {
+      position: absolute;
+      bottom: 5px;
+      left: 15px;
+      width: 38px;
+      height: 47px;
+      background: #d5b5dc;
+      border: 3px solid #493d59;
+      border-radius: 50% 50% 43% 43%;
+      box-shadow: inset -7px -3px 0 #b493c3
+    }
+
+    .guide-ear {
+      position: absolute;
+      bottom: 42px;
+      width: 15px;
+      height: 28px;
+      background: #d5b5dc;
+      border: 3px solid #493d59;
+      border-radius: 80% 80% 25% 25%;
+      z-index: -1
+    }
+
+    .guide-ear.one {
+      left: 16px;
+      transform: rotate(-14deg)
+    }
+
+    .guide-ear.two {
+      left: 37px;
+      transform: rotate(14deg)
+    }
+
+    .guide-face {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-size: 17px;
+      letter-spacing: 3px;
+      color: #493d59
+    }
+
+    .guide-blush {
+      position: absolute;
+      bottom: 19px;
+      left: 21px;
+      color: #e494a0;
+      font-size: 9px
+    }
+
+    .guide-tag {
+      position: absolute;
+      left: 70px;
+      bottom: 29px;
+      width: 126px;
+      padding: 8px 10px;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 12px 12px 12px 2px;
+      font-size: 10px;
+      box-shadow: 0 5px 18px #142d3844;
+      line-height: 1.35
+    }
+
+    .guide-tag:before {
+      content: "";
+      position: absolute;
+      left: -5px;
+      bottom: 0;
+      border: 6px solid transparent;
+      border-bottom-color: var(--paper);
+      border-right-color: var(--paper)
+    }
+
+    .bottomrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 4px 0;
+      color: #c4d7d0;
+      font-size: 11px
+    }
+
+    .hint {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .hint-icon {
+      color: var(--yellow);
+      font-size: 15px
+    }
+
+    .restart {
+      border: 0;
+      background: transparent;
+      color: #c4d7d0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 11px;
+      cursor: pointer;
+      opacity: .8
+    }
+
+    .restart:hover {
+      opacity: 1
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 25, 32, .64);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px
+    }
+
+    .modal.open {
+      display: flex;
+      animation: fade .25s ease
+    }
+
+    .card {
+      width: min(520px, 100%);
+      max-height: min(86vh, 760px);
+      overflow: auto;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 24px;
+      padding: 30px 32px;
+      box-shadow: var(--shadow);
+      position: relative;
+      animation: rise .35s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    .card:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 7px;
+      background: linear-gradient(var(--pink), var(--yellow), var(--mint));
+      border-radius: 24px 0 0 24px
+    }
+
+    .close {
+      position: absolute;
+      right: 17px;
+      top: 17px;
+      border: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #edf2e9;
+      color: var(--ink);
+      font-size: 18px;
+      cursor: pointer
+    }
+
+    .close:hover {
+      background: #e2ebdc
+    }
+
+    .card-kicker {
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #82958b;
+      font-weight: 700
+    }
+
+    .card h2 {
+      font: 600 32px/1.12 Fraunces, serif;
+      margin: 9px 35px 10px 0;
+      letter-spacing: -.02em
+    }
+
+    .card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #526a6d;
+      margin: 8px 0 16px
+    }
+
+    .action {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 17px;
+      background: var(--night2);
+      color: #fff8e9;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #102932;
+      transition: transform .15s, box-shadow .15s
+    }
+
+    .action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 #102932
+    }
+
+    .action:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #102932
+    }
+
+    .soft-action {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px
+    }
+
+    .soft-action:hover {
+      background: #f3f4e9
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 16px 0
+    }
+
+    .choice {
+      border: 1px solid var(--line);
+      background: #fffdf7;
+      border-radius: 16px;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.4;
+      transition: .2s
+    }
+
+    .choice:hover {
+      border-color: #a7c6a3;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px #23394314
+    }
+
+    .choice.selected {
+      background: #e7f2e5;
+      border-color: #83aa89;
+      box-shadow: inset 0 0 0 1px #83aa89
+    }
+
+    .choice .emoji {
+      font-size: 25px;
+      display: block;
+      margin-bottom: 6px
+    }
+
+    .puzzle {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0
+    }
+
+    .star-button {
+      border: 1px solid #e2e0d1;
+      background: #fffdf7;
+      color: #a4a89c;
+      border-radius: 14px;
+      width: 58px;
+      height: 58px;
+      font-size: 23px;
+      cursor: pointer
+    }
+
+    .star-button.lit {
+      color: #ba8b20;
+      background: #fff3c8;
+      border-color: #e8c96e;
+      box-shadow: 0 0 20px #f7d78770
+    }
+
+    .maze {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 18px 0
+    }
+
+    .maze button {
+      min-height: 74px;
+      border: 1px solid var(--line);
+      background: #f7f3e8;
+      border-radius: 14px;
+      color: var(--ink);
+      font-size: 12px;
+      cursor: pointer
+    }
+
+    .maze button:hover {
+      background: #e9f2e4
+    }
+
+    .maze button:disabled {
+      opacity: .5
+    }
+
+    .bouquet {
+      height: 90px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 5px;
+      margin: 12px 0 0
+    }
+
+    .stem {
+      height: 48px;
+      width: 3px;
+      background: #71956f;
+      transform-origin: bottom;
+      position: relative
+    }
+
+    .stem:before {
+      content: attr(data-flower);
+      position: absolute;
+      top: -27px;
+      left: -12px;
+      font-size: 25px
+    }
+
+    .stem:after {
+      content: "";
+      position: absolute;
+      width: 13px;
+      height: 7px;
+      border-radius: 100% 0;
+      background: #8cb286;
+      top: 18px;
+      left: 2px;
+      transform: rotate(-24deg)
+    }
+
+    .final-message {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: #f6f2e7;
+      border: 1px dashed #d8cba8;
+      font: 500 16px/1.65 Fraunces, serif;
+      color: #485d59
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 20;
+      background: var(--cream);
+      color: var(--ink);
+      padding: 11px 16px;
+      border-radius: 99px;
+      box-shadow: var(--shadow);
+      font-size: 12px;
+      transition: .3s
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0)
+    }
+
+    .spider-petal {
+      fill: none;
+      stroke: #8fc5ff;
+      stroke-width: 4;
+      stroke-linecap: round
+    }
+
+    .spider-stamen {
+      fill: none;
+      stroke: #b6d8ff;
+      stroke-width: 2;
+      stroke-linecap: round
+    }
+
+    .spider-core {
+      fill: #f7d787
+    }
+
+    .pin-mark {
+      fill: #213b47;
+      stroke: none
+    }
+
+    .place.current .pin {
+      filter: drop-shadow(0 0 11px var(--lily));
+      stroke: #f1f8ff
+    }
+
+    .place.locked {
+      opacity: .34;
+      cursor: not-allowed
+    }
+
+    .place.locked .pin {
+      fill: #91a49a !important;
+      stroke: #d6e1d9 !important
+    }
+
+    .place.locked .pin-mark {
+      fill: #eff4ee
+    }
+
+    .place.done {
+      opacity: .82
+    }
+
+    .place.done .pin {
+      fill: var(--mint)
+    }
+
+    .lily-game {
+      height: 210px;
+      margin: 14px 0 10px;
+      border: 1px solid #c5def5;
+      border-radius: 18px;
+      background: radial-gradient(circle at 50% 25%, #e8f4ff, #d9e9f5 72%);
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+      user-select: none
+    }
+
+    .lily-player {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 2;
+      transform: translate(-50%, -50%);
+      font-size: 34px;
+      line-height: 1;
+      cursor: grab;
+      filter: drop-shadow(0 2px 2px #3a607544);
+      touch-action: none
+    }
+
+    .lily-player:active {
+      cursor: grabbing
+    }
+
+    .lily-pickup {
+      position: absolute;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px #68aaff)
+    }
+
+    .lily-pickup[hidden] {
+      display: none
+    }
+
+    .lily-game-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: #48667c
+    }
+
+    .lily-svg {
+      width: 38px;
+      height: 38px
+    }
+
+    @keyframes blink {
+      from {
+        opacity: .35
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(15px) scale(.98)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+      }
+    }
+
+    .confetti-piece {
+      position: fixed;
+      width: 8px;
+      height: 12px;
+      z-index: 30;
+      pointer-events: none;
+      border-radius: 2px;
+      animation: confetti-fall 1.6s ease-out forwards
+    }
+
+    @keyframes confetti-fall {
+      to {
+        transform: translate(var(--cx), var(--cy)) rotate(var(--cr));
+        opacity: 0
+      }
+    }
+
+    .reply-wrap {
+      margin-top: 18px;
+      text-align: left
+    }
+
+    .reply-wrap label {
+      font-size: 10px;
+      color: #82958b;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 700
+    }
+
+    .reply-wrap textarea {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font: inherit;
+      font-size: 13px;
+      resize: vertical;
+      color: var(--ink)
+    }
+
+    .reply-actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .firefly.interactive {
+      cursor: pointer
+    }
+
+    .keepsake-chip {
+      margin: 4px 6px 0 0
+    }
+
+    .letter-fab {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px 9px 12px;
+      background: var(--yellow);
+      color: #3b2f12;
+      border: 0;
+      border-radius: 999px;
+      box-shadow: 0 12px 26px -10px rgba(0, 0, 0, .5);
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      animation: bob 3.4s ease-in-out infinite
+    }
+
+    .letter-fab .emoji {
+      font-size: 19px;
+      line-height: 1
+    }
+
+    .letter-reward {
+      white-space: pre-wrap
+    }
+
+    @media(max-width:480px) {
+      .letter-fab .lbl {
+        display: none
+      }
+
+      .letter-fab {
+        padding: 10px;
+        right: 12px;
+        top: 12px
+      }
+    }
+
+    @media(max-width:800px) {
+      .shell {
+        padding: 18px 16px 22px
+      }
+
+      .garden {
+        min-height: 600px;
+        border-radius: 22px
+      }
+
+      .scene {
+        width: 150%;
+        left: -25%;
+        height: 100%
+      }
+
+      .moon {
+        right: 14%;
+        width: 55px;
+        height: 55px
+      }
+
+      .intro {
+        margin: 22px auto 12px
+      }
+
+      .intro p {
+        font-size: 13px
+      }
+
+      .place-label {
+        font-size: 13px
+      }
+
+      .place-sub {
+        font-size: 10px
+      }
+
+      .tiny-guide {
+        transform: scale(.9);
+        transform-origin: bottom left;
+        left: 4%;
+        bottom: 5%
+      }
+
+      .bottomrow {
+        font-size: 10px
+      }
+
+      .card {
+        padding: 28px 23px
+      }
+
+      .card h2 {
+        font-size: 29px
+      }
+    }
+
+    @media(max-width:480px) {
+      .status {
+        display: none
+      }
+
+      .brand {
+        font-size: 11px
+      }
+
+      .intro h1 {
+        font-size: 42px
+      }
+
+      .garden {
+        min-height: 540px
+      }
+
+      .scene {
+        width: 185%;
+        left: -42.5%
+      }
+
+      .place-label {
+        font-size: 14px
+      }
+
+      .place-sub {
+        font-size: 11px
+      }
+
+      .moon {
+        right: 10%;
+        top: 7%
+      }
+
+      .choices {
+        gap: 6px
+      }
+
+      .choice {
+        padding: 12px 5px;
+        font-size: 11px
+      }
+
+      .choice .emoji {
+        font-size: 22px
+      }
+
+      .bottomrow {
+        align-items: flex-start
+      }
+
+      .hint {
+        max-width: 235px;
+        line-height: 1.5
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      *,
+      *:before,
+      *:after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">✿</span><span>A little world for Cupcake</span></div>
+      <div class="status"><span class="status-dot"></span><span id="statusText">The garden is waking up</span></div>
+      <button class="sound" id="keepsakesBtn" aria-label="View your keepsakes">📖 Keepsakes</button>
+      <button class="sound" id="soundBtn" aria-label="Toggle garden sounds">♫ Sound off</button>
+    </header>
+    <section class="intro" aria-labelledby="title">
+      <div class="eyebrow">A tiny adventure, made with love</div>
+      <h1 id="title">Cupcake’s Dream Garden</h1>
+      <p>Follow the fireflies. Find the little things I tucked away for you.</p>
+      <div class="step-hint" id="stepHint">Start here <b>Wishing Pond</b> <span>· tap the bright pin</span></div>
+      <div class="progress-wrap"><span class="progress-label">Garden glow</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div><span class="progress-label" id="progressCount">0 / 7</span>
+      </div>
+    </section>
+    <section class="garden" aria-label="Interactive dream garden">
+      <div class="stars"></div>
+      <div class="moon"></div>
+      <button class="letter-fab" id="letterBtn" aria-label="Read your letter"><span class="emoji">💌</span><span
+          class="lbl">Read my letter</span></button>
+      <svg class="scene" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid slice"
+        aria-label="Illustrated moonlit garden with places to explore" role="img">
+        <path class="hill" d="M0 380 Q180 300 350 370 T690 350 T1200 365 V620 H0Z" />
+        <path class="hill2" d="M0 445 Q220 350 435 425 T850 405 T1200 430 V620 H0Z" />
+        <path class="hill3" d="M0 520 Q230 430 460 485 T880 475 T1200 500 V620 H0Z" />
+        <path class="path-edge"
+          d="M290 395 C320 430 365 430 400 412 S450 350 490 280 C560 215 650 235 775 225 S890 235 855 295 C800 360 735 380 694 445 S660 465 600 480" />
+        <path class="path"
+          d="M290 395 C320 430 365 430 400 412 S450 350 490 280 C560 215 650 235 775 225 S890 235 855 295 C800 360 735 380 694 445 S660 465 600 480" />
+        <path class="pathdash"
+          d="M290 395 C320 430 365 430 400 412 S450 350 490 280 C560 215 650 235 775 225 S890 235 855 295 C800 360 735 380 694 445 S660 465 600 480" />
+        <!-- wishing pond -->
+        <ellipse class="pond" cx="290" cy="430" rx="105" ry="46" />
+        <path class="pondline" d="M215 426 Q290 410 365 426 M245 442 Q290 433 335 442" />
+        <path d="M273 414 q17-16 34 0 q-17 15-34 0" fill="#f5e8b7" opacity=".8" />
+        <!-- Cupcake's favorite: blue spider lilies -->
+        <g class="spider-lily" transform="translate(392 442)">
+          <path
+            d="M0 0v33 M0 0C-14-17-33-18-43-39 M0 0C-9-23-22-34-24-55 M0 0C-2-25-4-39 4-59 M0 0C9-22 20-34 29-51 M0 0C16-18 34-24 47-40"
+            class="spider-petal" />
+          <path d="M-4-4C-28-21-47-20-55-28 M-2-5C-15-29-14-48-10-58 M2-5C16-28 34-37 48-37 M4-2C29-12 47-7 56-1"
+            class="spider-stamen" />
+          <circle class="spider-core" r="4" />
+          <path d="M0 19q-14-12-21-4q8 12 21 4" fill="#83a875" />
+        </g>
+        <g class="spider-lily" transform="translate(730 456) scale(.72)">
+          <path
+            d="M0 0v35 M0 0C-14-17-33-18-43-39 M0 0C-9-23-22-34-24-55 M0 0C-2-25-4-39 4-59 M0 0C9-22 20-34 29-51 M0 0C16-18 34-24 47-40"
+            class="spider-petal" />
+          <path d="M-4-4C-28-21-47-20-55-28 M-2-5C-15-29-14-48-10-58 M2-5C16-28 34-37 48-37 M4-2C29-12 47-7 56-1"
+            class="spider-stamen" />
+          <circle class="spider-core" r="4" />
+        </g>
+        <!-- greenhouse -->
+        <g>
+          <path class="structure" d="M774 330 V250 Q774 218 810 218 H925 Q961 218 961 250 V330Z" />
+          <path class="roof" d="M759 252 Q867 155 976 252Z" />
+          <path class="glass" d="M794 321 V255 Q794 238 812 238 H860 V321Z" />
+          <path class="glass" d="M876 238 H923 Q941 238 941 255 V321 H876Z" />
+          <path d="M867 238V325 M782 275h174" stroke="#8e7864" stroke-width="3" fill="none" />
+          <path d="M850 330v-38q17-20 34 0v38" fill="#e2d0ad" stroke="#8e7864" stroke-width="3" />
+          <circle cx="878" cy="310" r="2" fill="#8e7864" />
+        </g>
+        <!-- garden arch -->
+        <g>
+          <path d="M433 373v-77a60 60 0 0 1 120 0v77" fill="none" stroke="#806951" stroke-width="12"
+            stroke-linecap="round" />
+          <path d="M438 305q30-25 52-4t48-3q7 23-5 45t-45 21q-32-4-49-29Z" fill="#6e9b72" />
+          <path d="M482 277q30-26 62-8" fill="none" stroke="#9aba87" stroke-width="5" />
+          <circle class="flowers" cx="456" cy="325" r="7" />
+          <circle class="flowers" cx="523" cy="295" r="7" />
+          <circle class="flowers" cx="535" cy="344" r="6" />
+        </g>
+        <!-- trees -->
+        <g>
+          <path class="trunk" d="M107 425q13-65 3-138h18q-3 84 15 138Z" />
+          <circle class="leaf" cx="118" cy="259" r="49" />
+          <circle class="leaf2" cx="84" cy="285" r="35" />
+          <circle class="leaf" cx="151" cy="293" r="39" />
+          <circle class="flowers" cx="106" cy="254" r="6" />
+          <circle class="flowers" cx="143" cy="284" r="5" />
+        </g>
+        <g>
+          <path class="trunk" d="M1055 445q15-77 6-164h19q-4 91 17 164Z" />
+          <circle class="leaf" cx="1068" cy="254" r="54" />
+          <circle class="leaf2" cx="1031" cy="286" r="37" />
+          <circle class="leaf" cx="1107" cy="291" r="43" />
+          <circle class="flowers" cx="1047" cy="248" r="6" />
+          <circle class="flowers" cx="1095" cy="277" r="6" />
+        </g>
+        <!-- blooms -->
+        <g opacity=".95">
+          <g transform="translate(230 495)">
+            <path d="M0 0v45" stroke="#8fb184" stroke-width="3" />
+            <circle class="flowers" cy="-3" r="9" />
+            <circle cx="0" cy="-3" r="3" fill="#f7d787" />
+          </g>
+          <g transform="translate(970 460)">
+            <path d="M0 0v48" stroke="#8fb184" stroke-width="3" />
+            <circle cx="0" cy="-3" r="10" fill="#e6bddf" />
+            <circle cx="0" cy="-3" r="3" fill="#f7d787" />
+          </g>
+          <g transform="translate(735 495)">
+            <path d="M0 0v42" stroke="#8fb184" stroke-width="3" />
+            <circle cx="0" cy="-3" r="9" fill="#f3b5a9" />
+            <circle cx="0" cy="-3" r="3" fill="#f7d787" />
+          </g>
+        </g>
+        <!-- kitten hollow bushes -->
+        <g transform="translate(610 312)">
+          <ellipse cx="-24" cy="10" rx="27" ry="18" fill="#4f7657" />
+          <ellipse cx="16" cy="15" rx="31" ry="20" fill="#5d8762" />
+          <ellipse cx="-3" cy="-5" rx="23" ry="17" fill="#6a9870" />
+          <circle cx="-24" cy="2" r="2" fill="#fff8e9" opacity=".6" />
+          <circle cx="18" cy="6" r="2" fill="#fff8e9" opacity=".6" />
+        </g>
+        <!-- fireflies: tap any of these anytime for a little bonus note -->
+        <circle class="firefly interactive" cx="321" cy="299" r="5" tabindex="0" role="button" aria-label="A firefly" />
+        <circle class="firefly interactive" cx="695" cy="273" r="4" tabindex="0" role="button" aria-label="A firefly" />
+        <circle class="firefly interactive" cx="998" cy="353" r="5" tabindex="0" role="button" aria-label="A firefly" />
+        <circle class="firefly interactive" cx="380" cy="370" r="4" tabindex="0" role="button" aria-label="A firefly" />
+        <circle class="firefly interactive" cx="680" cy="405" r="5" tabindex="0" role="button" aria-label="A firefly" />
+        <!-- interactive place pins; unlock in order -->
+        <g class="place" data-place="pond" tabindex="0" role="button" aria-label="Visit the wishing pond">
+          <circle class="pin" cx="290" cy="367" r="15" fill="#f7d787" stroke="#fff4ce" stroke-width="3" /><text
+            class="pin-mark" x="290" y="372" text-anchor="middle" font-size="14">✦</text><text class="place-label"
+            x="290" y="340" text-anchor="middle">Wishing Pond</text><text class="place-sub" x="290" y="389"
+            text-anchor="middle">a little constellation</text>
+        </g>
+        <g class="place locked" data-place="lilies" tabindex="0" role="button"
+          aria-label="Visit the blue spider lily grove">
+          <circle class="pin" cx="402" cy="397" r="15" fill="#8fc5ff" stroke="#d9ecff" stroke-width="3" /><text
+            class="pin-mark" x="402" y="402" text-anchor="middle" font-size="14">✦</text><text class="place-label"
+            x="402" y="371" text-anchor="middle">Blue Lily Grove</text><text class="place-sub" x="402" y="420"
+            text-anchor="middle">catch 5 lilies</text>
+        </g>
+        <g class="place" data-place="maze" tabindex="0" role="button" aria-label="Visit the secret maze">
+          <circle class="pin" cx="490" cy="265" r="15" fill="#f3b5a9" stroke="#ffe8dd" stroke-width="3" /><text
+            class="pin-mark" x="490" y="270" text-anchor="middle" font-size="14">✦</text><text class="place-label"
+            x="490" y="236" text-anchor="middle">Secret Maze</text><text class="place-sub" x="490" y="287"
+            text-anchor="middle">something is hiding</text>
+        </g>
+        <g class="place locked" data-place="catcorner" tabindex="0" role="button" aria-label="Visit Kitten Hollow">
+          <circle class="pin" cx="610" cy="300" r="15" fill="#ffb4c6" stroke="#ffe3ea" stroke-width="3" /><text
+            class="pin-mark" x="610" y="305" text-anchor="middle" font-size="14">✦</text><text class="place-label"
+            x="610" y="274" text-anchor="middle">Kitten Hollow</text><text class="place-sub" x="610" y="322"
+            text-anchor="middle">something's hiding</text>
+        </g>
+        <g class="place" data-place="greenhouse" tabindex="0" role="button" aria-label="Visit the greenhouse">
+          <circle class="pin" cx="867" cy="198" r="15" fill="#bfe0c3" stroke="#e5f5df" stroke-width="3" /><text
+            class="pin-mark" x="867" y="203" text-anchor="middle" font-size="14">✦</text><text class="place-label"
+            x="867" y="173" text-anchor="middle">Moon Greenhouse</text><text class="place-sub" x="867" y="220"
+            text-anchor="middle">pick a little bouquet</text>
+        </g>
+        <g class="place" data-place="cinema" tabindex="0" role="button" aria-label="Visit the tiny cinema">
+          <circle class="pin" cx="694" cy="430" r="15" fill="#cab9df" stroke="#f0e7ff" stroke-width="3" /><text
+            class="pin-mark" x="694" y="435" text-anchor="middle" font-size="14">✦</text><text class="place-label"
+            x="694" y="405" text-anchor="middle">Tiny Cinema</text><text class="place-sub" x="694" y="456"
+            text-anchor="middle">choose our next date</text>
+        </g>
+        <g class="place locked" data-place="bloom" tabindex="0" role="button"
+          aria-label="Visit the final bloom, locked">
+          <circle class="pin" cx="600" cy="480" r="17" fill="#f7d787" stroke="#fff4ce" stroke-width="3" /><text
+            class="pin-mark" x="600" y="486" text-anchor="middle" font-size="16">✿</text><text class="place-label"
+            x="600" y="515" text-anchor="middle">The Final Bloom</text><text class="place-sub" x="600" y="533"
+            text-anchor="middle">your little surprise</text>
+        </g>
+      </svg>
+      <div class="tiny-guide" aria-hidden="true">
+        <div class="guide-ear one"></div>
+        <div class="guide-ear two"></div>
+        <div class="guide-body"></div>
+        <div class="guide-face">•ᴗ•</div>
+        <div class="guide-blush">●　●</div>
+        <div class="guide-shadow"></div>
+        <div class="guide-tag" id="guideTag">Start at the Wishing Pond. Only the bright pin is open!</div>
+      </div>
+    </section>
+    <div class="bottomrow">
+      <div class="hint"><span class="hint-icon">✧</span><span>Only the bright pin is open. Finish it to unlock your next
+          stop.</span></div><span class="progress-label" id="fireflyCount">Fireflies found: 0 / 5</span><button
+        class="restart" id="restartBtn">Start over</button>
+    </div>
+  </main>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="card" id="card"><button class="close" id="closeBtn" aria-label="Close">×</button>
+      <div class="card-kicker" id="modalKicker">A garden secret</div>
+      <h2 id="modalTitle"></h2>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    // Personalize these lines with your own memories and words before sharing the finished gift.
+    const GARDEN = {
+      pondMemory: "One of my favorite things about us is how even an ordinary day can turn into a memory I want to keep.",
+      mazeCompliment: "You make my world softer, brighter, and a lot more fun. I hope you never forget how special you are to me.",
+      finalMessage: "Hey, Cupcake. I made this little world for you because you deserve lovely things just because. Wherever life takes us, I’m always cheering for you. I love you, Like Crazy Hehe. 💜",
+      dateIdeas: {cozy: "Blankets, snacks, one movie we both love, and absolutely no rushing the goodbye.", silly: "A ridiculous movie, dramatic commentary, and us laughing at the same scenes like we haven’t seen them a hundred times.", dreamy: "A moonlit movie night, your favorite treats, and a little plan for all the places we’ll go together."},
+      // New: Kitten Hollow, since you're always sending me the cutest cat pictures.
+      catCornerMessage: "You're always sending me the cutest cat pictures, so I hid a few of my own in here for you. 🐾",
+      greenhouseMessage: "You picked the sweetest little bouquet. Every flower is a tiny reminder of something I adore about you.",
+      catCornerLines: ["this one just wants pets.", "this one's already purring.", "this one's demanding your full attention, obviously."],
+      // Shown one at a time when you tap a firefly, in no particular order.
+      fireflyLines: ["Just a little reminder: I'm thinking about you.", "You make even a garden feel warmer.", "Hi. That's it, just hi.", "Here's a tiny hello, hidden just for you.", "I'm glad the garden gets to see you too."],
+      replyPrompt: "Want to tell me something back?",
+      // The standalone letter, opened from the 💌 button in the corner of the garden,
+      // always available no matter how far she's gotten. Write your own below —
+      // each line becomes its own paragraph, just like on your other sites.
+      letter: [
+        "Well i wanted to make this cuz i was bored and i had nothing else to do so just read it idiot. So idk wtf I should write bruh. Well I Love You lol I hope you feel the same.",
+        "Bruh I guess that's all for now but more sites are on the way so read them all. AND I LOVE YOU BOOOOM."
+      ],
+    };
+    const order = ['pond', 'lilies', 'maze', 'catcorner', 'greenhouse', 'cinema', 'bloom'];
+    const stopNames = {pond: 'Wishing Pond', lilies: 'Blue Lily Grove', maze: 'Secret Maze', catcorner: 'Kitten Hollow', greenhouse: 'Moon Greenhouse', cinema: 'Tiny Cinema', bloom: 'Final Bloom'};
+    const state = {completed: new Set(), flowers: [], stars: 0, mazeStep: 0, dateMood: null, lilyScore: 0, lilySeconds: 15, lilyTimer: null, sound: false, audio: null, soundTimer: null, fireflies: new Set()};
+    const $ = s => document.querySelector(s), modal = $('#modal'), body = $('#modalBody');
+    function nextPlace() {return order.find(x => !state.completed.has(x))}
+    function toast(msg) {const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2400)}
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function burstConfetti(count) {if (reduceMotion) return; const colors = ['#f3b5a9', '#f7d787', '#8fc5ff', '#bfe0c3', '#cab9df']; for (let i = 0; i < count; i++) {const el = document.createElement('span'); el.className = 'confetti-piece'; const angle = Math.random() * Math.PI * 2, dist = 80 + Math.random() * 170; el.style.setProperty('--cx', (Math.cos(angle) * dist) + 'px'); el.style.setProperty('--cy', (Math.sin(angle) * dist - 50) + 'px'); el.style.setProperty('--cr', (Math.random() * 360) + 'deg'); el.style.background = colors[i % colors.length]; el.style.left = (49 + Math.random() * 4) + '%'; el.style.top = (36 + Math.random() * 4) + '%'; document.body.appendChild(el); setTimeout(() => el.remove(), 1700)} }
+    function updateGarden() {let n = state.completed.size, next = nextPlace(); $('#progressFill').style.width = (n / order.length * 100) + '%'; $('#progressCount').textContent = n + ' / ' + order.length; $('#stepHint').innerHTML = n === order.length ? 'All done <b>The Final Bloom</b> <span>· your garden is complete</span>' : `Next stop <b>${stopNames[next]}</b> <span>· tap the bright pin</span>`; $('#statusText').textContent = n === order.length ? 'The garden is in full bloom' : `Next: ${stopNames[next]}`; document.querySelectorAll('.place').forEach(el => {let id = el.dataset.place, isDone = state.completed.has(id), isNext = id === next; el.classList.toggle('done', isDone); el.classList.toggle('current', isNext); el.classList.toggle('locked', !isNext && !isDone); const mark = el.querySelector('.pin-mark'), sub = el.querySelector('.place-sub'); if (mark) mark.textContent = isDone ? '✓' : isNext ? '✦' : '·'; if (sub) sub.textContent = isDone ? 'found it' : isNext ? (id === 'lilies' ? 'catch 5 blue lilies' : id === 'catcorner' ? 'find 3 kittens' : id === 'bloom' ? 'your little surprise' : 'tap to explore') : 'locked'; el.setAttribute('aria-label', `${isDone ? 'Completed' : isNext ? 'Next stop' : 'Locked'}: ${stopNames[id]}`)}); $('#guideTag').textContent = n === 0 ? 'Start at the Wishing Pond. Only the bright pin is open!' : n === 1 ? 'Next up: catch five blue spider lilies!' : n < 5 ? 'Lovely! Follow the bright pin to your next stop.' : 'Everything is ready for the final bloom.'}
+    function open(title, kicker, html) {$('#modalTitle').textContent = title; $('#modalKicker').textContent = kicker; body.innerHTML = html; modal.classList.add('open'); $('#closeBtn').focus()}
+    // Types text into an element instead of dumping it in all at once, so a
+    // reward feels like it's unfolding rather than just a click-and-done popup.
+    // Tap/click the text to skip straight to the end. Calls onDone when finished.
+    function typeReveal(el, text, onDone) {if (!el) return; if (reduceMotion) {el.textContent = text; if (onDone) onDone(); return } const chars = Array.from(text); const per = Math.max(6, Math.min(26, 9000 / Math.max(1, chars.length))); let i = 0, done = false; function finish() {if (done) return; done = true; el.textContent = text; el.removeEventListener('click', skip); if (onDone) onDone()} function skip() {finish()} el.addEventListener('click', skip, {once: true}); (function step() {if (done) return; i++; el.textContent = chars.slice(0, i).join(''); if (i < chars.length) {setTimeout(step, per)} else {finish()} })()}
+    function openLetter() {open('A letter, just for you', 'Always unlocked, tap anytime', '<p id="letterReward" class="letter-reward" style="font:500 18px/1.75 Fraunces,serif;color:#334c4e"></p>'); const lines = (GARDEN.letter && GARDEN.letter.length) ? GARDEN.letter : ['Write your own letter to her here.']; typeReveal($('#letterReward'), lines.join('\n\n'))}
+    $('#letterBtn').onclick = openLetter;
+    function stopLilyGame() {clearInterval(state.lilyTimer); state.lilyTimer = null}
+    function close() {stopLilyGame(); modal.classList.remove('open')}
+    function finishPlace(id) {stopLilyGame(); state.completed.add(id); updateGarden(); burstConfetti(18); setTimeout(() => {close(); if (state.completed.size === order.length - 1) toast('The final flower is ready for you ✿'); else toast('The garden glows a little brighter ✧')}, 220)}
+    function visit(id) {if (state.completed.has(id)) {showPlace(id, true); return } if (id !== nextPlace()) {toast('Follow the little path in order ✧'); return } showPlace(id, false)}
+    function showPlace(id, done) {
+      if (done) {const again = {pond: () => open('The wishing pond', 'A memory for your pocket', `<p>${GARDEN.pondMemory}</p><button class="soft-action" onclick="close()">Keep wandering</button>`), lilies: () => open('Blue Lily Grove', 'Your little catch', `<p>You found five blue spider lilies! The grove is glowing just for you. 💙</p><button class="soft-action" onclick="close()">Keep wandering</button>`), maze: () => open('A little reminder', 'Secret found', `<p>${GARDEN.mazeCompliment}</p><button class="soft-action" onclick="close()">Keep wandering</button>`), catcorner: () => open('Kitten Hollow', 'All three found', `<p>${GARDEN.catCornerMessage}</p><button class="soft-action" onclick="close()">Keep wandering</button>`), greenhouse: () => open('Your bouquet', 'Made just for you', `<div class="bouquet">${state.flowers.map(f => `<span class="stem" data-flower="${f}"></span>`).join('')}</div><p>${GARDEN.greenhouseMessage}</p><button class="soft-action" onclick="close()">Keep wandering</button>`), cinema: () => open('Our little movie date', 'Saved for us', `<p>${GARDEN.dateIdeas[state.dateMood || 'cozy']}</p><button class="soft-action" onclick="close()">Keep wandering</button>`), bloom: finale}; again[id](); return }
+      if (id === 'pond') pondPuzzle(); if (id === 'lilies') lilyGame(); if (id === 'maze') mazePuzzle(); if (id === 'catcorner') catCornerGame(); if (id === 'greenhouse') greenhouse(); if (id === 'cinema') cinema(); if (id === 'bloom') finale()
+    }
+    function pondPuzzle() {state.stars = 0; open('The wishing pond', 'A tiny constellation puzzle', `<p>Tap the stars in order to connect the little constellation. Every sky needs three wishes.</p><div class="puzzle"><button class="star-button" data-star="1" aria-label="First star">✦</button><button class="star-button" data-star="2" aria-label="Second star">✦</button><button class="star-button" data-star="3" aria-label="Third star">✦</button></div><p id="puzzleHint" style="text-align:center;font-size:12px">Start with the star on the left ✨</p>`); body.querySelectorAll('.star-button').forEach((b, i) => b.onclick = () => {if (i !== state.stars) {state.stars = 0; body.querySelectorAll('.star-button').forEach(x => x.classList.remove('lit')); $('#puzzleHint').textContent = 'Oops, try again from the left ✨'; return } b.classList.add('lit'); state.stars++; if (state.stars === 3) {body.innerHTML = `<div class="card-kicker">A memory for your pocket</div><p id="pondReward" style="font:500 18px/1.6 Fraunces,serif;color:#334c4e"></p>`; typeReveal($('#pondReward'), GARDEN.pondMemory, () => {const btn = document.createElement('button'); btn.className = 'action'; btn.id = 'claim'; btn.textContent = 'Keep this memory'; btn.onclick = () => finishPlace('pond'); body.appendChild(btn)})} })}
+    function lilyIcon() {return `<svg class="lily-svg" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 36C20 27 14 22 9 9M32 36C25 22 24 14 27 4M32 36C33 20 39 11 47 5M32 36C43 25 51 22 59 22M32 36C47 32 55 35 61 42M32 36C22 42 15 50 13 60" fill="none" stroke="#5896d5" stroke-width="3.5" stroke-linecap="round"/><path d="M32 37C18 25 12 25 5 24M32 37C26 22 31 13 36 5M32 37C43 23 49 17 57 16M32 37C45 37 54 43 59 51" fill="none" stroke="#8fc5ff" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="36" r="4" fill="#f2c866"/></svg>`}
+    function lilyGame() {stopLilyGame(); state.lilyScore = 0; state.lilySeconds = 25; const spots = [[16, 22], [79, 19], [55, 77], [25, 78], [84, 64]]; open('Blue Lily Grove', 'A little movement game', `<p>Guide the bunny through the meadow and gather five blue spider lilies. Use <b>arrow keys / WASD</b>, or drag the bunny with your finger or mouse.</p><div class="lily-game-stats"><span id="lilyScore">Lilies: 0 / 5</span><span id="lilyTime">25 seconds</span></div><div class="lily-game" id="lilyField" tabindex="0" role="application" aria-label="Flower meadow. Move the bunny with arrow keys, WASD, or by dragging it."><div class="lily-player" id="lilyPlayer" aria-label="Bunny">🐰</div>${spots.map((p, i) => `<span class="lily-pickup" data-index="${i}" style="left:${p[0]}%;top:${p[1]}%">${lilyIcon()}</span>`).join('')}</div><p id="lilyHint" style="font-size:11px;text-align:center">Move close to each flower to collect it. 💙</p>`); const field = $('#lilyField'), player = $('#lilyPlayer'); let px = 50, py = 50, dragging = false; const flowers = [...body.querySelectorAll('.lily-pickup')]; function update() {player.style.left = px + '%'; player.style.top = py + '%'; const rect = field.getBoundingClientRect(); flowers.forEach(f => {if (f.hidden) return; const x = parseFloat(f.style.left), y = parseFloat(f.style.top), d = Math.hypot((px - x) * rect.width / 100, (py - y) * rect.height / 100); if (d < 38) {f.hidden = true; state.lilyScore++; $('#lilyScore').textContent = `Lilies: ${state.lilyScore} / 5`; if (state.lilyScore === 5) win()} })} function win() {stopLilyGame(); body.innerHTML = `<div class="card-kicker">The grove is glowing</div><h2>Five blue lilies for you 💙</h2><p>You guided the bunny all around the meadow! Cupcake’s favorite flowers are blooming just for you.</p><button class="action" id="claim">Keep exploring</button>`; $('#claim').onclick = () => finishPlace('lilies')} function movePointer(e) {if (!dragging) return; const r = field.getBoundingClientRect(); px = Math.max(5, Math.min(95, (e.clientX - r.left) / r.width * 100)); py = Math.max(8, Math.min(92, (e.clientY - r.top) / r.height * 100)); update()} player.addEventListener('pointerdown', e => {dragging = true; player.setPointerCapture(e.pointerId); field.focus(); movePointer(e); e.preventDefault()}); player.addEventListener('pointermove', movePointer); player.addEventListener('pointerup', () => dragging = false); player.addEventListener('pointercancel', () => dragging = false); field.addEventListener('keydown', e => {const k = e.key.toLowerCase(), step = e.shiftKey ? 8 : 4; if (['arrowup', 'w'].includes(k)) {py -= step} else if (['arrowdown', 's'].includes(k)) {py += step} else if (['arrowleft', 'a'].includes(k)) {px -= step} else if (['arrowright', 'd'].includes(k)) {px += step} else {return } e.preventDefault(); px = Math.max(5, Math.min(95, px)); py = Math.max(8, Math.min(92, py)); update()}); update(); field.focus(); state.lilyTimer = setInterval(() => {state.lilySeconds--; const clock = $('#lilyTime'); if (clock) clock.textContent = state.lilySeconds + ' seconds'; if (state.lilySeconds <= 0) {stopLilyGame(); $('#lilyHint').innerHTML = 'The flowers are still here. Take another try! <button class="soft-action" id="tryAgain">Try again</button>'; $('#tryAgain').onclick = lilyGame} }, 1000)}
+    function mazePuzzle() {state.mazeStep = 0; const clues = ['The left path smells like roses.', 'A little pawprint points toward the middle.', 'You found the way!']; open('The secret maze', 'Follow the firefly trail', `<p id="mazeClue">${clues[0]}</p><div class="maze"><button data-path="left">🌹<br>Rose path</button><button data-path="middle">🐾<br>Middle path</button><button data-path="right">🍄<br>Mushroom path</button></div><p style="font-size:11px">Choose a path at each fork. Your tiny guide is rooting for you.</p>`); body.querySelectorAll('.maze button').forEach(b => b.onclick = () => {const correct = ['left', 'middle', 'right'][state.mazeStep]; if (b.dataset.path !== correct) {$('#mazeClue').textContent = 'Not quite! A firefly is pointing you back. Try another path.'; b.disabled = true; return } state.mazeStep++; if (state.mazeStep === 3) {body.innerHTML = `<div class="card-kicker">You found the hidden note</div><p id="mazeReward" style="font:500 18px/1.6 Fraunces,serif;color:#334c4e"></p>`; typeReveal($('#mazeReward'), GARDEN.mazeCompliment, () => {const btn = document.createElement('button'); btn.className = 'action'; btn.id = 'claim'; btn.textContent = 'Tuck it in my pocket'; btn.onclick = () => finishPlace('maze'); body.appendChild(btn)})} else {$('#mazeClue').textContent = clues[state.mazeStep]; body.querySelectorAll('.maze button').forEach(x => x.disabled = false)} })}
+    function catCornerGame() {open('Kitten Hollow', 'Someone is hiding', `<p>Three kittens are hiding in the hollow, just like the ones in all those pictures you keep sending me. Find all three.</p><div class="choices" id="bushes"><button class="choice" data-bush="0"><span class="emoji">🌿</span>Left bush</button><button class="choice" data-bush="1"><span class="emoji">🌿</span>Middle bush</button><button class="choice" data-bush="2"><span class="emoji">🌿</span>Right bush</button></div><p id="catHint" style="text-align:center;font-size:12px">Tap a bush to peek inside 🐾</p>`); const found = new Set(); const lines = GARDEN.catCornerLines || ["this one just wants pets.", "this one's already purring.", "this one's demanding attention."]; body.querySelectorAll('[data-bush]').forEach((b, i) => b.onclick = () => {if (found.has(i)) return; found.add(i); b.classList.add('selected'); b.innerHTML = `<span class="emoji">🐱</span>${lines[i] || 'found one!'}`; if (found.size === 3) {$('#catHint').textContent = 'All three found! 🐾'; setTimeout(() => {body.innerHTML = `<div class="card-kicker">All three found</div><p id="catReward" style="font:500 18px/1.6 Fraunces,serif;color:#334c4e"></p>`; typeReveal($('#catReward'), GARDEN.catCornerMessage, () => {const btn = document.createElement('button'); btn.className = 'action'; btn.id = 'claim'; btn.textContent = 'Keep this one too'; btn.onclick = () => finishPlace('catcorner'); body.appendChild(btn)})}, 650)} })}
+    function greenhouse() {state.flowers = []; open('The moon greenhouse', 'Make a bouquet from the heart', `<p>Pick three flowers for your bouquet. Each one is a little thing I love about you.</p><div class="choices" id="flowers"><button class="choice" data-flower="🌷"><span class="emoji">🌷</span>your kindness</button><button class="choice" data-flower="🌼"><span class="emoji">🌼</span>your laugh</button><button class="choice" data-flower="🌸"><span class="emoji">🌸</span>your big heart</button><button class="choice" data-flower="🌻"><span class="emoji">🌻</span>your courage</button><button class="choice" data-flower="💐"><span class="emoji">💐</span>your whole self</button><button class="choice" data-flower="🪻"><span class="emoji">🪻</span>your silly side</button></div><div class="bouquet" id="bouquet"></div><button class="action" id="claim" disabled style="opacity:.5">Gather my bouquet (0/3)</button>`); body.querySelectorAll('.choice').forEach(b => b.onclick = () => {const f = b.dataset.flower; if (b.classList.contains('selected')) {b.classList.remove('selected'); state.flowers = state.flowers.filter(x => x !== f)} else if (state.flowers.length < 3) {b.classList.add('selected'); state.flowers.push(f)} $('#bouquet').innerHTML = state.flowers.map(x => `<span class="stem" data-flower="${x}"></span>`).join(''); const c = $('#claim'); c.textContent = `Gather my bouquet (${state.flowers.length}/3)`; c.disabled = state.flowers.length !== 3; c.style.opacity = state.flowers.length === 3 ? '1' : '.5'}); $('#claim').onclick = () => {body.innerHTML = `<div class="card-kicker">Made just for you</div><div class="bouquet">${state.flowers.map(f => `<span class="stem" data-flower="${f}"></span>`).join('')}</div><p id="greenReward" style="font:500 16px/1.65 Fraunces,serif;color:#485d59"></p>`; typeReveal($('#greenReward'), GARDEN.greenhouseMessage, () => {const btn = document.createElement('button'); btn.className = 'action'; btn.id = 'claim2'; btn.textContent = 'Keep this bouquet'; btn.onclick = () => finishPlace('greenhouse'); body.appendChild(btn)})}}
+    function cinema() {open('The tiny cinema', 'Pick the mood for our next date', `<p>Choose a movie-night feeling. There’s no wrong answer; I just want to spend the time with you.</p><div class="choices"><button class="choice" data-mood="cozy"><span class="emoji">🍿</span>cozy & cuddly</button><button class="choice" data-mood="silly"><span class="emoji">🎬</span>ridiculously silly</button><button class="choice" data-mood="dreamy"><span class="emoji">🌙</span>soft & dreamy</button></div><div id="dateReveal"></div>`); body.querySelectorAll('[data-mood]').forEach(b => b.onclick = () => {state.dateMood = b.dataset.mood; body.querySelectorAll('[data-mood]').forEach(x => x.classList.remove('selected')); b.classList.add('selected'); $('#dateReveal').innerHTML = `<p id="cinemaReward" class="final-message"></p>`; typeReveal($('#cinemaReward'), GARDEN.dateIdeas[state.dateMood], () => {const btn = document.createElement('button'); btn.className = 'action'; btn.id = 'claim'; btn.textContent = 'Save our date ✨'; btn.onclick = () => finishPlace('cinema'); $('#dateReveal').appendChild(btn)})})}
+    function finale() {open('The final bloom', 'You made the garden glow', `<p>Every little thing you found led to this. I hope this garden feels like a hug you can come back to whenever you need one.</p><div class="final-message">${GARDEN.finalMessage}</div><p style="text-align:center;margin-top:17px">✿　✧　💜　✧　✿</p><button class="action" id="claim">Let the garden bloom</button>`); $('#claim').onclick = () => {state.completed.add('bloom'); updateGarden(); burstConfetti(50); body.innerHTML = `<div class="card-kicker">For my favorite person</div><h2 style="margin-top:6px">Look what you grew ✿</h2><p>The whole garden is glowing because you came to visit.</p><div class="final-message" id="finalReward" style="white-space:pre-wrap"></div><p style="text-align:center;font-size:22px">🌷 🌼 🌸 💜 🌻</p><div class="reply-wrap" id="replySection" hidden><label for="replyBox">${GARDEN.replyPrompt}</label><textarea id="replyBox" rows="3" placeholder="Type anything you want him to see..."></textarea><div class="reply-actions"><button class="soft-action" id="copyReply">Copy my reply</button></div></div><button class="soft-action" onclick="close()" id="stayBtn" hidden style="margin-top:14px">Stay in the garden</button>`; $('#guideTag').textContent = 'You made it bloom! Come back whenever you like. ✿'; $('#statusText').textContent = 'The garden is in full bloom'; toast('A whole garden, just for you 💜'); typeReveal($('#finalReward'), GARDEN.finalMessage, () => {$('#replySection').hidden = false; $('#stayBtn').hidden = false; const replyBox = $('#replyBox'), copyBtn = $('#copyReply'); if (copyBtn) copyBtn.onclick = async () => {const text = replyBox.value.trim(); if (!text) {toast('Type something first 💭'); return } try {await navigator.clipboard.writeText(text); toast('Copied! Paste it to him whenever you want 💜')} catch (e) {replyBox.select(); toast('Text selected — press Ctrl/Cmd + C to copy')} }})}}
+    document.querySelectorAll('.place').forEach(el => {el.addEventListener('click', () => visit(el.dataset.place)); el.addEventListener('keydown', e => {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); visit(el.dataset.place)} })}); $('#closeBtn').onclick = close; modal.addEventListener('click', e => {if (e.target === modal) close()}); document.addEventListener('keydown', e => {if (e.key === 'Escape') close()});
+    // Fireflies: a little bonus note any time, doesn't gate progress.
+    function updateFireflyCount() {const el = $('#fireflyCount'); if (el) el.textContent = `Fireflies found: ${state.fireflies.size} / 5`}
+    function catchFirefly(i, el) {state.fireflies.add(i); updateFireflyCount(); const lines = GARDEN.fireflyLines || ["Just a little reminder: I'm thinking about you."]; toast(lines[i % lines.length]); if (!reduceMotion) {el.style.transform = 'scale(1.7)'; setTimeout(() => {el.style.transform = '';}, 280)} }
+    document.querySelectorAll('.firefly').forEach((f, i) => {f.addEventListener('click', () => catchFirefly(i, f)); f.addEventListener('keydown', e => {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); catchFirefly(i, f)} })});
+    // Keepsakes: revisit anything already found.
+    function openKeepsakes() {if (state.completed.size === 0) {open('Keepsakes', 'Nothing here yet', `<p>Nothing collected yet, go explore the garden first. 🌙</p><button class="soft-action" onclick="close()">Back to the garden</button>`); return } const items = order.filter(id => state.completed.has(id)).map(id => `<button class="soft-action keepsake-chip" data-revisit="${id}">${stopNames[id]}</button>`).join(''); open('Keepsakes', 'Everything you have found so far', `<p>Tap anything below to visit it again.</p><div>${items}</div>`); body.querySelectorAll('[data-revisit]').forEach(b => b.addEventListener('click', () => showPlace(b.dataset.revisit, true)))}
+    $('#keepsakesBtn').onclick = openKeepsakes;
+    $('#restartBtn').onclick = () => {state.completed.clear(); state.flowers = []; state.mazeStep = 0; state.dateMood = null; state.lilyScore = 0; state.fireflies.clear(); updateFireflyCount(); updateGarden(); close(); toast('The garden is ready for a fresh visit ✧')};
+    // A soft synthesized chime repeats only after the visitor turns sound on.
+    function chime() {if (!state.audio) return; try {const now = state.audio.currentTime;[659, 784].forEach((hz, i) => {const o = state.audio.createOscillator(), g = state.audio.createGain(); o.type = 'sine'; o.frequency.value = hz; g.gain.setValueAtTime(.0001, now + i * .18); g.gain.exponentialRampToValueAtTime(.022, now + i * .18 + .05); g.gain.exponentialRampToValueAtTime(.0001, now + i * .18 + .75); o.connect(g); g.connect(state.audio.destination); o.start(now + i * .18); o.stop(now + i * .18 + .8)})} catch (e) { } };
+    $('#soundBtn').onclick = () => {state.sound = !state.sound; $('#soundBtn').textContent = state.sound ? '♫ Sound on' : '♫ Sound off'; if (state.sound) {try {state.audio = state.audio || new (window.AudioContext || window.webkitAudioContext)(); state.audio.resume(); chime(); state.soundTimer = setInterval(chime, 6500)} catch (e) {state.sound = false; $('#soundBtn').textContent = '♫ Sound off'; toast('Sound is unavailable in this browser')} } else {clearInterval(state.soundTimer); state.soundTimer = null} };
+    updateGarden();
+  </script>
+</body>
+
+</html>
